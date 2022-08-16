@@ -1,5 +1,8 @@
 from sqlalchemy import Column,  String, Integer
-from db.config.database import Base
+from sqlalchemy.ext.declarative import declarative_base
+
+
+Base = declarative_base()
 
 
 class Recipe(Base):
