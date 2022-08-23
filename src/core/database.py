@@ -13,4 +13,14 @@ SQLALCHEMY_DATABASE_URL = 'postgresql+pg8000://{0}:{1}@localhost/{2}'.format(
 )
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
+# database = databases.Database(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+

@@ -1,17 +1,13 @@
-import os
-from dotenv import load_dotenv
 from fastapi import FastAPI
-from api.users import router as users_router
+from auth.router import router as auth_router
+from users.router import router as users_router
+from recipes.router import router as recipe_routes
 
-
-# load env variables from .env file.
-load_dotenv()
 
 # init application and include routers.
 app = FastAPI()
-app.include_router(users_router)
 
 
-@app.get('/')
-async def test():
-    return {'pgsql_name': os.getenv('PGSQL_DB_NAME')}
+app.include_router(auth_router, prefix='/auth')
+app.include_router(users_router, prefix='/users')
+app.include_router(recipe_routes, prefix='/recipes')
