@@ -1,7 +1,7 @@
 from passlib.context import CryptContext
 
 
-pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
+pwd_context = CryptContext(schemes=["sha256_crypt", "md5_crypt"])
 
 
 def verify_password(plain_password, hashed_password):

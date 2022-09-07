@@ -2,10 +2,11 @@ from typing import List, Optional
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from . import models
+from auth.hashing import get_password_hash
 
 
 async def register_new_user(db: Session, request) -> models.User:
-    new_user = models.User(name=request.name, password=request.password)
+    new_user = models.User(name=request.name, password=get_password_hash(request.password))
     db.add(new_user)
     db.commit()
     db.refresh(new_user)

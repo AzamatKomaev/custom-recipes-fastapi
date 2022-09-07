@@ -6,13 +6,14 @@ from users.models import User
 from core.database import get_db
 from . import hashing
 from .jwt import create_access_token
+from .schemas import Login
 
 router = APIRouter()
 
 
 @router.post('/login')
-def login(db: Session = Depends(get_db), request: OAuth2PasswordRequestForm = Depends()):
-    user = db.query(User).filter(User.email == request.username).first()
+def login(request: Login, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.name == request.name).first()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Invalid Credentials')
 
