@@ -25,6 +25,13 @@ async def get_user_by_id(db: Session, user_id: int) -> Optional[models.User]:
     return user_info
 
 
+async def get_user_by_name(db: Session, name: str) -> Optional[models.User]:
+    user_info = db.query(models.User).filter(models.User.name == name).first()
+    if not user_info:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Data Not Found !")
+    return user_info
+
+
 async def delete_user_by_id(db: Session, user_id: int):
     db.query(models.User).filter(models.User.id == user_id).delete()
     db.commit()

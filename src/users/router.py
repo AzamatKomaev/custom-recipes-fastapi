@@ -1,11 +1,13 @@
 from typing import List
 from fastapi import APIRouter, Depends, status, Response, HTTPException
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 from auth.jwt import get_current_user
 from core.database import get_db
 from . import schemas
 from . import services
 from . import validator
+from auth.schemas import TokenData
 
 router = APIRouter()
 
@@ -32,11 +34,16 @@ async def get_all_users(db: Session = Depends(get_db)):
     return await services.get_all_users(db)
 
 
+@router.get('/me', response_model=schemas.DisplayUser)
+async def get_me(db: Session = Depends(get_db), current_user: TokenData = Depends(get_current_user)):
+    return await services.get_user_by_name(db, current_user.name)
+
+
 @router.get('/{user_id}', response_model=schemas.DisplayUser)
-async def get_user_by_id(user_id: int, db: Session = Depends(get_db), current_user: schemas.DisplayUser = Depends(get_current_user)):
+async def get_user_by_id(user_id: int, db: Session = Depends(get_db), current_user: TokenData = Depends(get_current_user)):
     return await services.get_user_by_id(db, user_id)
 
 
 @router.delete('/{user_id}', status_code=status.HTTP_204_NO_CONTENT, response_class=Response)
-async def delete_user_by_id(user_id: int, db: Session = Depends(get_db), current_user: schemas.DisplayUser = Depends(get_current_user)):
+async def delete_user_by_id(user_id: int, db: Session = Depends(get_db), current_user: TokenData = Depends(get_current_user)):
     return await services.delete_user_by_id(db, user_id)
