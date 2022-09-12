@@ -1,6 +1,5 @@
 from typing import List
 from fastapi import APIRouter, Depends, status, Response, HTTPException
-from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 from auth.jwt import get_current_user
 from core.database import get_db

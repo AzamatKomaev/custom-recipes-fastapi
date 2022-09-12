@@ -5,7 +5,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from core.database import SQLALCHEMY_DATABASE_URL
+from core.database import SQLALCHEMY_DATABASE_URL, Base
 from users.models import Base as UsersBase
 from recipes.models import Base as RecipesBase
 
@@ -27,7 +27,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = [UsersBase.metadata, RecipesBase.metadata]
+target_metadata = [Base.metadata]
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

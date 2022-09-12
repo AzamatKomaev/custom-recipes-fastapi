@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 
 
 load_dotenv()
@@ -13,8 +14,9 @@ SQLALCHEMY_DATABASE_URL = 'postgresql+pg8000://{0}:{1}@localhost/{2}'.format(
 )
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
-# database = databases.Database(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+Base = declarative_base()
 
 
 def get_db():

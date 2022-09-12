@@ -7,6 +7,7 @@ from . import hashing
 from .jwt import create_access_token
 from .schemas import Login
 
+
 router = APIRouter()
 
 
