@@ -1,15 +1,22 @@
-from fastapi import APIRouter
-from .schemas import RecipeSingle, RecipeCreate
+from typing import List
+
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+from auth.jwt import get_current_user
+from auth.schemas import TokenData
+from core.database import get_db
+from .schemas import RecipeCreate, RecipeSingle
 from . import services
+
 
 router = APIRouter()
 
 
-@router.get('/')
-async def get_recipes():
-    return await services.get_recipe_list()
+@router.get('/', response_model=List[RecipeSingle])
+async def get_recipes(db: Session = Depends(get_db)):
+    return await services.get_recipe_list(db)
 
 
-@router.post('/create', status_code=201)
-async def create_recipe(item: RecipeCreate):
-    return await services.create_recipe(item)
+@router.post('/create', response_model=RecipeSingle, status_code=201)
+async def create_recipe(item: RecipeCreate, db: Session = Depends(get_db), current_user: TokenData = Depends(get_current_user)):
+    return await services.create_recipe(db, item, current_user.id)

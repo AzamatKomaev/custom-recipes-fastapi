@@ -13,4 +13,5 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
+    id: int
     name: Optional[str] = None

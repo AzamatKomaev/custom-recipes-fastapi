@@ -10,8 +10,6 @@ class RecipeBase(BaseModel):
     cooking_steps: List[str]
     hashtags: List[str]
     image: str
-    is_active: bool
-    user_id: int
 
 
 class RecipeCreate(RecipeBase):
@@ -20,8 +18,14 @@ class RecipeCreate(RecipeBase):
 
 class RecipeSingle(RecipeBase):
     id: int
+    is_active: bool
+    user_id: int
     created_at: datetime
     updated_at: datetime
 
     class Config:
         orm_mode = True
+
+
+class RecipeList(BaseModel):
+    __root__: List[RecipeSingle]
