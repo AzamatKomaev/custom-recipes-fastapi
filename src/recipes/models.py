@@ -13,7 +13,7 @@ class Recipe(Base):
     description = Column(Text)
     cooking_steps = Column(ARRAY(Text))
     hashtags = Column(ARRAY(String))
-    image = Column(String)
+    image = Column(String, nullable=True)
     is_active = Column(Boolean, default=True, server_default="1")
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())

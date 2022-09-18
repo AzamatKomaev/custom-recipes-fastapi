@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import List
 from pydantic import BaseModel, Field
 
 
@@ -13,8 +14,13 @@ class UserCreate(UserBase):
 class UserSingle(UserBase):
     id: int
     is_active: bool
+    recipes_count: int = 0
     created_at: datetime
     updated_at: datetime
 
     class Config:
         orm_mode = True
+
+
+class UserList(BaseModel):
+    __root__: List[UserSingle]

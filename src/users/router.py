@@ -1,4 +1,3 @@
-from typing import List
 from fastapi import APIRouter, Depends, status, Response, HTTPException
 from sqlalchemy.orm import Session
 from auth.jwt import get_current_user
@@ -24,7 +23,7 @@ async def create_user_registration(request: schemas.UserCreate, db: Session = De
     return new_user
 
 
-@router.get('/', response_model=List[schemas.UserSingle])
+@router.get('/', response_model=schemas.UserList)
 async def get_all_users(db: Session = Depends(get_db)):
     return await services.get_all_users(db)
 

@@ -1,3 +1,4 @@
+from typing import Optional
 from datetime import datetime
 from typing import List
 from pydantic import BaseModel
@@ -9,7 +10,7 @@ class RecipeBase(BaseModel):
     description: str
     cooking_steps: List[str]
     hashtags: List[str]
-    image: str
+    image: Optional[str] = None
 
 
 class RecipeCreate(RecipeBase):

@@ -1,7 +1,7 @@
-from typing import List, Optional
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from . import models
+from . import schemas
 from auth.hashing import get_password_hash
 
 
@@ -13,23 +13,19 @@ async def register_new_user(db: Session, request) -> models.User:
     return new_user
 
 
-async def get_all_users(db: Session) -> List[models.User]:
+async def get_all_users(db: Session) -> schemas.UserList:
     users = db.query(models.User).all()
-    return users
+    users_model = []
+    for user in users:
+        users_model.append(schemas.UserSingle(**user.__dict__, recipes_count=len(user.recipes)))
+    return schemas.UserList(__root__=users_model)
 
 
-async def get_user_by_id(db: Session, user_id: int) -> Optional[models.User]:
-    user_info = db.query(models.User).get(user_id)
-    if not user_info:
+async def get_user_by_id(db: Session, user_id: int) -> schemas.UserSingle:
+    user = db.query(models.User).get(user_id)
+    if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Data Not Found !")
-    return user_info
-
-
-async def get_user_by_name(db: Session, name: str) -> Optional[models.User]:
-    user_info = db.query(models.User).filter(models.User.name == name).first()
-    if not user_info:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Data Not Found !")
-    return user_info
+    return schemas.UserSingle(**user.__dict__, recipes_count=len(user.recipes))
 
 
 async def delete_user_by_id(db: Session, user_id: int):
