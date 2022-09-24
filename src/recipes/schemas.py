@@ -1,7 +1,6 @@
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
-from typing import List
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class RecipeBase(BaseModel):
@@ -30,3 +29,9 @@ class RecipeSingle(RecipeBase):
 
 class RecipeList(BaseModel):
     __root__: List[RecipeSingle]
+
+
+class RecipeFilter(BaseModel):
+    name: Optional[str] = Field(
+        default=None, 
+    )

@@ -1,25 +1,38 @@
 from fastapi import HTTPException, status
-from sqlalchemy import any_
+from sqlalchemy import any_, desc
 from sqlalchemy.orm import Session
 
 from . import schemas
 from . import models
 
 
-def get_recipe_list(db: Session, filter_params: dict):
+def get_recipe_list(db: Session, query: dict):
     """Get recipe list and return recipes list."""
     filter_list = []
 
-    name = filter_params.get('name')
-    hashtag = filter_params.get('hashtag')
+    name = query.get('name')
+    hashtag = query.get('hashtag')
+    recipe_type = query.get('type')
+    author_id = query.get('user_id')
+    order_by = query.get('order_by', 'created_at')
+    ordering_list = ['name', 'created_at']
+
+    if order_by not in ordering_list:
+        raise HTTPException(status_code=422, detail='Invalid order_by value.')
 
     if name is not None:
-        filter_list.append(models.Recipe.name.like(name))
+        filter_list.append(models.Recipe.name.contains(name))
 
     if hashtag is not None:
         filter_list.append('#' + hashtag == any_(models.Recipe.hashtags))
 
-    recipes = db.query(models.Recipe).filter(*filter_list).all()
+    if recipe_type is not None:
+        filter_list.append(models.Recipe.type.like(recipe_type))
+
+    if author_id is not None and author_id.isdigit():
+        filter_list.append(models.Recipe.user_id == int(author_id))
+
+    recipes = db.query(models.Recipe).filter(*filter_list).order_by(desc(order_by)).all()
     return recipes
 
 
