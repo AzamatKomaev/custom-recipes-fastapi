@@ -36,8 +36,8 @@ def get_recipe_list(db: Session, query: dict):
     return recipes
 
 
-async def get_recipe_by_id(db: Session, recipe_id: int):
-    recipe = db.query(models.Recipe).get(recipe_id)
+async def get_recipe_detail(db: Session, query: dict):
+    recipe = db.query(models.Recipe).filter_by(**query).first()
     if not recipe:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Data Not Found !")
     return schemas.RecipeSingle(**recipe.__dict__)

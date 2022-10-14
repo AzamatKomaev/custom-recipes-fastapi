@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, status, Response, HTTPException
 from sqlalchemy.orm import Session
-from auth.jwt import get_current_user
-from auth.schemas import TokenData
-from core.database import get_db
+from src.auth.jwt import get_current_user
+from src.auth.schemas import TokenData
+from src.core.database import get_db
 from . import schemas
 from . import services
 from . import validator

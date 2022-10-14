@@ -1,12 +1,12 @@
-from typing import List, Optional
+from typing import List
 
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 
-from auth.jwt import get_current_user
-from auth.schemas import TokenData
-from core.database import get_db
-from .schemas import RecipeCreate, RecipeSingle
+from src.auth.jwt import get_current_user
+from src.auth.schemas import TokenData
+from src.core.database import get_db
+from .schemas import RecipeCreate, RecipeSingle, RecipeFilter
 from . import services
 
 
@@ -18,9 +18,9 @@ def get_all_recipes(request: Request, db: Session = Depends(get_db)):
     return services.get_recipe_list(db, {**request.query_params})
 
 
-@router.get('/{recipe_id}', response_model=RecipeSingle)
-async def get_recipe(recipe_id: int, db: Session = Depends(get_db)):
-    return await services.get_recipe_by_id(db, recipe_id)
+@router.get('/detail', response_model=RecipeSingle)
+async def get_recipe(recipe_filter: RecipeFilter = Depends(), db: Session = Depends(get_db)):
+    return await services.get_recipe_detail(db, recipe_filter.__dict__)
 
 
 @router.post('/create', response_model=RecipeSingle, status_code=201)

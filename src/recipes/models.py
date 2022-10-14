@@ -1,7 +1,7 @@
 from sqlalchemy import Integer, String, Text, ARRAY, DateTime, Boolean, ForeignKey
 from sqlalchemy.sql import func
-from core.database import Base
-from core.utils import Column
+from src.core.database import Base
+from src.core.utils import Column
 
 
 class Recipe(Base):

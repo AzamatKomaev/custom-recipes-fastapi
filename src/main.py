@@ -1,7 +1,7 @@
 from fastapi import FastAPI
-from auth.router import router as auth_router
-from users.router import router as users_router
-from recipes.router import router as recipe_routes
+from src.auth.router import router as auth_router
+from src.users.router import router as users_router
+from src.recipes.router import router as recipe_routes
 
 
 # init application and include routers.

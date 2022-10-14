@@ -7,9 +7,11 @@ from sqlalchemy.ext.declarative import declarative_base
 
 load_dotenv()
 
-SQLALCHEMY_DATABASE_URL = 'postgresql+pg8000://{0}:{1}@localhost/{2}'.format(
+SQLALCHEMY_DATABASE_URL = 'postgresql+pg8000://{0}:{1}@{2}:{3}/{4}'.format(
     os.getenv('PGSQL_USER_NAME'),
     os.getenv('PGSQL_PASSWORD'),
+    os.getenv('PGSQL_HOST'),
+    5432,
     os.getenv('PGSQL_DB_NAME')
 )
 

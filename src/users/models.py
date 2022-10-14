@@ -1,8 +1,8 @@
 from sqlalchemy import String, Boolean, DateTime, Integer, Column as DefaultColumn
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
-from core.database import Base
-from core.utils import Column
+from src.core.database import Base
+from src.core.utils import Column
 
 
 class User(Base):

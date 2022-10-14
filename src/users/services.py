@@ -2,7 +2,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from . import models
 from . import schemas
-from auth.hashing import get_password_hash
+from src.auth.hashing import get_password_hash
 
 
 async def register_new_user(db: Session, request) -> models.User:
