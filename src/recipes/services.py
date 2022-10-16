@@ -2,6 +2,8 @@ from fastapi import HTTPException, status
 from sqlalchemy import any_, desc
 from sqlalchemy.orm import Session
 
+from src.core.logging import logger
+
 from . import schemas
 from . import models
 
@@ -9,6 +11,8 @@ from . import models
 def get_recipe_list(db: Session, query: dict):
     """Get recipe list and return recipes list."""
     filter_list = []
+
+    logger.debug('Hello world!')
 
     name = query.get('name')
     hashtag = query.get('hashtag')
